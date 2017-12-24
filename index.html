@@ -2,17 +2,37 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Tempo-App</title>
+    <title>Tempo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- UIKit CDN -->  
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.4/css/uikit.cs" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.4/js/uikit.js"></script>
+	<!-- UI kit css and js -->
+        <link rel="stylesheet" href="css/uikit.min.css" />
+        <script src="assets/JavaScript/uikit.min.js"></script>
+        <script src="assets/JavaScript/uikit-icons.min.js"></script>
 
   </head>
   <body>
 
-	<button class="uk-button uk-width-1-1 uk-margin-small-bottom">...</button>
-<button class="uk-button uk-width-1-1">...</button>
+	<!-- Navbar -->
+	<nav class="uk-navbar">
+    	<ul class="uk-navbar-nav">
+        	<li class="uk-active"><a href="">Home</a></li>
+        	<li><a href="">Sign In</a></li>
+        	<li class="uk-parent"><a href="">Sign Up</a></li>
+    	</ul>
+	</nav>
+
+	<!-- main grid container-breaks page into two columns --> 
+	<div class="uk-grid">
+    	<div class="uk-width-1-2">Chat content here</div>
+    	<div class="uk-width-1-2">Music content here</div>
+	</div> <!--End of uk-grid div-->
 
   </body>
+
+<!-- jQuery -->
+ <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
 </html>
