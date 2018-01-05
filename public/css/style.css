@@ -1,0 +1,58 @@
+
+/****Header Styles *****/
+#default_site_logo {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#facebook, #google {
+  margin-left: 5px;
+}
+
+.hero {
+  margin-bottom: 10px;
+}
+
+/**** User Profile *******/
+.user-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  top: 22px;
+  width: 100%;
+  right: 0;
+  padding-left: 10px;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+ .user-container .user-pic {
+  top: -3px;
+  position: relative;
+  display: inline-block;
+  
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  background-size: 40px;
+  border-radius: 20px;
+}
+
+ .user-container .user-name {
+  font-size: 16px;
+  line-height: 36px;
+  padding-right: 10px;
+  padding-left: 20px;
+}
+/**** Content Area Columns *******/
+.messages {
+  border: 2px solid rgba(0, 221, 100, 1.0);
+  height: 500px;
+  margin: 0px auto;
+  width: 80%;
+}
+
+.message-input {
+  margin: 5px auto;
+  width: 80%;
+}
