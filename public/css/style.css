@@ -56,3 +56,20 @@
   margin: 5px auto;
   width: 80%;
 }
+
+/**** For logo *****/
+h1 {
+  font-family: 'Sedgwick Ave Display', cursive;
+
+}
+
+/** Sent message **/
+.sentmessage {
+
+
+}
+
+/** received message **/
+.receivedmessage {
+
+}
