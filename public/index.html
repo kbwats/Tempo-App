@@ -33,7 +33,8 @@
     <div class="container">
       <div class="navbar-brand">
         <div class="navbar-item">
-          <h1 id="default_site_logo">Tempo_App</h1>
+          <!-- <h1 id="default_site_logo">Tempo_App</h1> -->
+          <img src="./images/purp_tempo_logo.png" alt="Logo">
         </div>
       </div>
         <div class="navbar-end">
@@ -95,10 +96,10 @@
 
   <div class="columns">
     <div class="column">
-      <div class="messages">
+      <div id="messages">
         Sample Message here
       </div>
-      <div class="message-input">
+      <!-- <div class="message-input">
         <div class="field is-grouped">
           <p class="control is-expanded">
             <input class="input" type="text" placeholder="Enter Message">
@@ -109,7 +110,16 @@
             </a>
           </p>
        </div>
-      </div>
+      </div> -->
+      <form id="message-form" action="#">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="message">
+              <label class="mdl-textfield__label" for="message">Message...</label>
+            </div>
+            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+              Send
+            </button>
+      </form>
 
 
     </div>

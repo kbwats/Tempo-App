@@ -1,6 +1,10 @@
 
+
+'use strict';
+
 console.log("It is working")
 function TempoApp() {
+  this.checkSetup();
   // Shortcut to DOM Elements.
   this.googleSignInButton = document.getElementById('google');
   this.facebookSignInButton = document.getElementById('facebook')
@@ -9,19 +13,25 @@ function TempoApp() {
   this.signOutButton = document.querySelector('.sign-out');
   this.navButtons = document.querySelector('.nav-buttons');
   this.userInfo = document.querySelector('.user-info');
-  this.messageInput = document.querySelector('.input');
-  this.submitButton = document.querySelector('.submit-button');
-  this.messagesList = document.querySelector('.messages');
+  // this.messageInput = document.querySelector('.input');
+  //this.submitButton = document.querySelector('.submit-button');
+  this.messagesList = document.getElementById('messages');
+  this.messageForm = document.getElementById('message-form');
+  this.messageInput = document.getElementById('message');
+  this.submitButton = document.getElementById('submit');
 
 
 
 
 
-// Saves messages on form submit.
-this.submitButton.addEventListener('click', this.saveMessage.bind(this));
+ // Saves messages on form submit.
+ this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
 
 
 
+   var buttonTogglingHandler = this.toggleButton.bind(this);
+   this.messageInput.addEventListener('keyup', buttonTogglingHandler);
+   this.messageInput.addEventListener('change', buttonTogglingHandler);
 
   this.googleSignInButton.addEventListener('click', this.signInWithGoogle.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -36,6 +46,56 @@ TempoApp.prototype.initFirebase = function() {
   // Initiates Firebase auth and listen to auth state changes.
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
+
+// Loads chat messages history and listens for upcoming ones.
+TempoApp.prototype.loadMessages = function() {
+  // Reference to the /messages database path.
+  this.messagesRef = this.database.ref('messages');
+  // Remove all previous listeners.
+  this.messagesRef.off();
+
+  // Loads the last 12 messages and listen for new ones.
+  var setMessage = function(data) {
+    var val = data.val();
+    this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.imageUrl);
+  }.bind(this);
+  this.messagesRef.limitToLast(10).on('child_added', setMessage);
+  this.messagesRef.limitToLast(10).on('child_changed', setMessage);
+}
+
+TempoApp.prototype.saveMessage = function(e) {
+  e.preventDefault();
+  // Check that the user entered a message and is signed in.
+  if (this.messageInput.value && this.checkSignedInWithMessage()) {
+    var currentUser = this.auth.currentUser;
+
+    // Add a new message entry to the Firebase Database.
+
+    this.messagesRef.push({
+      name: currentUser.displayName,
+      text: this.messageInput.value,
+      photoUrl: currentUser.photoURL || 'images/profile_placeholder.png'
+    }).then(function() {
+      //Clear message text field and SEND button state.
+      this.resetMaterialTextfield(this.messageInput);
+       this.toggleButton();
+    }.bind(this)).catch(function(error) {
+      console.error('Error writing new message to Firebase Database', error);
+    })
+  }
+}
+
+TempoApp.prototype.setImageUrl = function(imageUri, imgElement) {
+  // If image is on Cloud Storage, fetch image URL and set img element's src.
+  if (imageUri.startsWith('gs://')) {
+    imgElement.src = TempoApp.LOADING_IMAGE_URL; // Display a loading image first.
+    this.storage.refFromURL(imageUri).getMetadata().then(function(metadata) {
+      imgElement.src = metadata.downloadURLs[0];
+    });
+  } else {
+    imgElement.src = imageUri;
+  }
+}
 
 
 TempoApp.prototype.signInWithGoogle = function() {
@@ -68,6 +128,9 @@ TempoApp.prototype.onAuthStateChanged = function(user) {
     this.signOutButton.removeAttribute('hidden');
 
     this.navButtons.setAttribute('hidden', 'true');
+
+    // Load currently existing chat messages.
+    this.loadMessages();
   } else {
     // If not the user, we will have to prompt the to create Google or Facebook Profile.
     this.userName.setAttribute('hidden', 'true');
@@ -87,24 +150,27 @@ TempoApp.prototype.checkSignedInWithMessage = function() {
   // Must determine what to do
 }
 
-TempoApp.prototype.loadMessages = function() {
-  // Reference to the /messages database path.
-  this.messagesRef = this.database.ref('messages');
-  // Remove all previous listeners.
-  this.messagesRef.off();
+// Resets the given MaterialTextField
+TempoApp.prototype.resetMaterialTextfield = function(element) {
+  console.log("This is working")
+  element.value = '';
 
-  // Loads the last 12 messages and listen for new ones.
-  var setMessage = function(data) {
-    var val = data.val();
-    this.displayMessage(data.key, val.name, val.text, val.photoUrl, val.imageUrl);
-  }.bind(this);
-  this.messagesRef.limitToLast(10).on('child_added', setMessage);
-  this.messagesRef.limitToLast(10).on('child_changed', setMessage);
+//  element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
 }
 
-TempoApp.prototype.saveMessage = function(e) {
-  console.log("You are attempting to save a message.")
-}
+// Template for messages.
+TempoApp.prototype.MESSAGE_TEMPLATE =
+  '<div class="message-container">' +
+      '<div class="spacing"><div class="pic"></div></div>' +
+      '<div class="message"></div>' +
+      '<div class="name"></div>' +
+    '</div>';
+
+
+TempoApp.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
+
+
+
 
 
 
@@ -114,21 +180,38 @@ TempoApp.prototype.displayMessage = function(key, name, text, picUrl, imageUri) 
   // If an element for that message does not exists yet we create it.
   if (!div) {
     var container = document.createElement('div');
-    container.innerHTML = TempoApp.MESSAGE_TEMPLATE;
+    container.innerHTML = this.MESSAGE_TEMPLATE;
     div = container.firstChild;
     div.setAttribute('id', key);
+    console.log(div)
     this.messagesList.appendChild(div);
   }
+  if(picUrl) {
+    div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
+  }
+  div.querySelector('.name').textContent = name;
 }
 
-TempoApp.MESSAGE_TEMPLATE =
-  '<div class="message-container">' +
-      '<div class="spacing"><div class="pic"></div></div>' +
-      '<div class="message"></div>' +
-      '<div class="name"></div>' +
-    '</div>';
 
 
+
+    // Enables or disables the submit button depending on the values of the input
+    // fields.
+    TempoApp.prototype.toggleButton = function() {
+      if (this.messageInput.value) {
+        this.submitButton.removeAttribute('disabled');
+      } else {
+        this.submitButton.setAttribute('disabled', 'true');
+      }
+    };
+
+    TempoApp.prototype.checkSetup = function() {
+      if (!window.firebase || !(firebase.app instanceof Function) || !firebase.app().options) {
+        window.alert('You have not configured and imported the Firebase SDK. ' +
+            'Make sure you go through the codelab setup instructions and make ' +
+            'sure you are running the codelab using `firebase serve`');
+      }
+    };
 
 
 window.onload = function() {
