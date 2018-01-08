@@ -57,7 +57,26 @@
   width: 80%;
 }
 
+<<<<<<< HEAD
 img {
   width: 300px;
   height: 100px;
 }
+=======
+/**** For logo *****/
+h1 {
+  font-family: 'Sedgwick Ave Display', cursive;
+
+}
+
+/** Sent message **/
+.sentmessage {
+
+
+}
+
+/** received message **/
+.receivedmessage {
+
+}
+>>>>>>> 6bb2520c04ea54e4caae06c7663803d8d4674785
