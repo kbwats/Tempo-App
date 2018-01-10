@@ -1,0 +1,27 @@
+{
+  "name": "tempo-app",
+  "version": "1.0.0",
+  "description": "An app that lets you share while chatting with friends.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbwats/Tempo-App.git"
+  },
+  "author": "Jacolby Kristen Patrick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kbwats/Tempo-App/issues"
+  },
+  "homepage": "https://github.com/kbwats/Tempo-App#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "path": "^0.12.7",
+    "youtube-api-search": "0.0.5",
+    "youtube-search-google-api": "^0.6.0"
+  },
+  "devDependencies": {}
+}

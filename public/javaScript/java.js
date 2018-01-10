@@ -1,20 +1,18 @@
+//var YTSearch = require('youtube-api-search');
 
 
-'use strict';
 
-console.log("It is working")
 function TempoApp() {
   this.checkSetup();
   // Shortcut to DOM Elements.
   this.googleSignInButton = document.getElementById('google');
   this.facebookSignInButton = document.getElementById('facebook')
-  this.userPic = document.querySelector('.user-pic');
-  this.userName = document.querySelector('.user-name');
+  this.userPic = document.getElementById('user-pic');
+  this.userName = document.getElementById('user-name');
+  this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.querySelector('.sign-out');
   this.navButtons = document.querySelector('.nav-buttons');
-  this.userInfo = document.querySelector('.user-info');
-  // this.messageInput = document.querySelector('.input');
-  //this.submitButton = document.querySelector('.submit-button');
+  this.userInfo = document.getElementById('user-info');
   this.messagesList = document.getElementById('messages');
   this.messageForm = document.getElementById('message-form');
   this.messageInput = document.getElementById('message');
@@ -33,7 +31,7 @@ function TempoApp() {
    this.messageInput.addEventListener('keyup', buttonTogglingHandler);
    this.messageInput.addEventListener('change', buttonTogglingHandler);
 
-  this.googleSignInButton.addEventListener('click', this.signInWithGoogle.bind(this));
+  this.signInButton.addEventListener('click', this.signInWithGoogle.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
 
   this.initFirebase();
@@ -67,6 +65,7 @@ TempoApp.prototype.saveMessage = function(e) {
   e.preventDefault();
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
+    console.log(this.messageInput.value)
     var currentUser = this.auth.currentUser;
 
     // Add a new message entry to the Firebase Database.
@@ -117,6 +116,7 @@ TempoApp.prototype.onAuthStateChanged = function(user) {
     var profilePicUrl = user.photoURL;
     var userName = user.displayName;
 
+
     // Show the user's profile pic and name.
     this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
     this.userName.textContent = userName;
@@ -127,7 +127,8 @@ TempoApp.prototype.onAuthStateChanged = function(user) {
     this.userPic.removeAttribute('hidden');
     this.signOutButton.removeAttribute('hidden');
 
-    this.navButtons.setAttribute('hidden', 'true');
+    //this.navButtons.setAttribute('hidden', 'true');
+    this.signInButton.setAttribute('hidden', 'true')
 
     // Load currently existing chat messages.
     this.loadMessages();
@@ -137,7 +138,8 @@ TempoApp.prototype.onAuthStateChanged = function(user) {
     this.userPic.setAttribute('hidden', 'true');
     this.userInfo.setAttribute('hidden', 'true');
     this.signOutButton.setAttribute('hidden', 'true');
-    this.navButtons.removeAttribute('hidden');
+    //this.navButtons.removeAttribute('hidden');
+    this.signInButton.removeAttribute('hidden');
   }
 }
 
@@ -164,7 +166,7 @@ TempoApp.prototype.MESSAGE_TEMPLATE =
       '<div class="spacing"><div class="pic"></div></div>' +
       '<div class="message"></div>' +
       '<div class="name"></div>' +
-    '</div>';
+  '</div>';
 
 
 TempoApp.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
@@ -181,15 +183,35 @@ TempoApp.prototype.displayMessage = function(key, name, text, picUrl, imageUri) 
   if (!div) {
     var container = document.createElement('div');
     container.innerHTML = this.MESSAGE_TEMPLATE;
+    console.log(container.innerHTML)
     div = container.firstChild;
     div.setAttribute('id', key);
-    console.log(div)
     this.messagesList.appendChild(div);
   }
   if(picUrl) {
+
     div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
   }
   div.querySelector('.name').textContent = name;
+  var messageElement = div.querySelector('.message');
+  if (text) { // If the message is text.
+    messageElement.textContent = text;
+    // Replace all line breaks by <br>.
+    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+  } else if (imageUri) { // If the message is an image.
+    var image = document.createElement('img');
+    image.addEventListener('load', function() {
+      this.messageList.scrollTop = this.messageList.scrollHeight;
+    }.bind(this));
+    this.setImageUrl(imageUri, image);
+    messageElement.innerHTML = '';
+    messageElement.appendChild(image);
+  }
+
+  // Show the card fading-in.
+  setTimeout(function() {div.classList.add('visible')}, 1);
+  this.messageList.scrollTop = this.messageList.scrollHeight;
+  this.messageInput.focus();
 }
 
 
