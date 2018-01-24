@@ -17,5 +17,5 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady() {
-  player.playVideo();
+  player.playVideo()
 }
