@@ -9,8 +9,9 @@ module.exports = function(app, path, bodyParser) {
 
    });
 
-   app.get("/search", (req, res) => {
-     YTSearch({key: API_Key, term: 'dogs'}, function(response) {
+   app.get("/search/:video", (req, res) => {
+     let video = req.params.video;
+     YTSearch({key: API_Key, term: video}, function(response) {
        console.log(response);
        res.json(response);
      });

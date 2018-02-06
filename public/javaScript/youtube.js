@@ -7,7 +7,7 @@ function onYouTubeIframeAPIReady() {
     height: '390',
     width: '640',
     // Set the id of the video to be played
-    videoId: 'g8cFOm6VdpY',
+    videoId: null,
     // Setup event listeners
     // These are covered in the next section
     events: {

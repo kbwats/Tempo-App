@@ -3,6 +3,7 @@
 
 
 function TempoApp() {
+  console.log("I am working!")
   this.checkSetup();
   // Shortcut to DOM Elements.
   this.googleSignInButton = document.getElementById('google');
@@ -10,7 +11,7 @@ function TempoApp() {
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
-  this.signOutButton = document.querySelector('.sign-out');
+  this.signOutButton = document.getElementById('sign-out');
   this.navButtons = document.querySelector('.nav-buttons');
   this.userInfo = document.getElementById('user-info');
   this.messagesList = document.getElementById('messages');
@@ -122,7 +123,7 @@ TempoApp.prototype.onAuthStateChanged = function(user) {
     this.userName.textContent = userName;
 
     // Show user's profile and sign-out button.
-    this.userInfo.removeAttribute('hidden');
+    // this.userInfo.removeAttribute('hidden');
     this.userName.removeAttribute('hidden');
     this.userPic.removeAttribute('hidden');
     this.signOutButton.removeAttribute('hidden');
@@ -136,7 +137,7 @@ TempoApp.prototype.onAuthStateChanged = function(user) {
     // If not the user, we will have to prompt the to create Google or Facebook Profile.
     this.userName.setAttribute('hidden', 'true');
     this.userPic.setAttribute('hidden', 'true');
-    this.userInfo.setAttribute('hidden', 'true');
+    // this.userInfo.setAttribute('hidden', 'true');
     this.signOutButton.setAttribute('hidden', 'true');
     //this.navButtons.removeAttribute('hidden');
     this.signInButton.removeAttribute('hidden');

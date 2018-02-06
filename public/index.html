@@ -36,7 +36,8 @@
 
 
    <!-- custom css -->
-    <link rel="stylesheet" href="css/style.css"/>
+    <!-- <link rel="stylesheet" href="css/style.css"/> -->
+    <link rel="stylesheet" href="css/youtube-branch.css">
 
 
     <!-- Material Design Lite -->
@@ -53,23 +54,85 @@
 
 <body>
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
+    <header class="header mdl-layout__header">
       <div class="mdl-grid mdl-cell mdl-cell--12-col">
         <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col">
-          <h3><i class="material-icons">headset</i>TEMPO</h3>
+          <h1 id="default_site_logo"><i class="material-icons">headset</i>TEMPO</h1>
         </div>
         <div id="user-container">
           <div hidden id="user-pic"></div>
           <div hidden id="user-name"></div>
+          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            Sign-out
+          </button>
+          <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">account_circle</i>Sign-in with Google
+          </button>
         </div>
-        <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect">
-          Sign-out
-        </button>
-        <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect">
-          <i class="material-icons">account_cirle</i>Sign-in with Google
-        </button>
       </div>
     </header>
+
+    <main class="mdl-layout__content mdl-color--grey-100">
+      <div id="content-grid" class="mdl-grid">
+        <div class="mdl-cell mdl-cell--6-col mdl-card mdl-shadow--4dp">
+          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+          <div id="messages">
+            <span id="message-filler"></span>
+          </div>
+          <form id="message-form" action="#">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="message">
+              <label class="mdl-textfield__label" for="message">Message...</label>
+            </div>
+            <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+              Send
+            </button>
+          </form>
+          <form id="image-form" action="#">
+            <input id="mediaCapture" type="file" accept="image/*,capture=camera">
+            <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
+              <i class="material-icons">image</i>
+            </button>
+          </form>
+        </div>
+        </div>
+        <div class="mdl-cell mdl-cell--6-col mdl-card mdl-shadow--4dp">
+          <div class="mdl-card__title mdl-color--accent">
+            <form id="video-form" action="#">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="video">
+                  <i class="material-icons">youtube_searched_for</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                  <input class="mdl-textfield__input" type="text" id="video">
+                  <label class="mdl-textfield__label">Search for song...</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- The videos will be displayed below -->
+          <div id="video-box">
+            <div class="video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/PWoTn6bvRgA" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                <div id="player"></div>
+            </div>
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--3-col">
+                <img id="thumb1" class="thumbnail-img" src="#" alt="">
+              </div>
+              <div class="mdl-cell mdl-cell--3-col">
+                <img id="thumb2"class="thumbnail-img" src="#" alt="">
+              </div>
+              <div class="mdl-cell mdl-cell--3-col">
+                <img id="thumb3"class="thumbnail-img" src="#" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
 
   </div>
   <!-- A redesign of the header using MDL -->
@@ -117,7 +180,7 @@
 
 
   <!-- Hero banner -->
-  <section class="hero is-success">
+  <!-- <section class="hero is-success">
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
@@ -125,15 +188,15 @@
            </h1>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- main containers for chat area and music info -->
-<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<!-- <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <main class="mdl-layout__content mdl-color--grey-100">
     <div id="messages-card-container" class="mdl-cell mdl-cell--12-col mdl-grid">
 
       <!-- Messages container -->
-      <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
+      <!-- <div id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
           <div id="messages">
             <span id="message-filler"></span>
@@ -159,7 +222,7 @@
       <div id="youtube-player" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
         <div class="video">
            <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/dogs" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> -->
-           <div id="player"></div>
+           <!-- <div id="player"></div>
         </div>
       </div>
 
@@ -168,9 +231,9 @@
         <button class="mdl-snackbar__action" type="button"></button>
       </div>
 
-    </div>
-  </main>
-</div>
+    </div> -->
+  <!-- </main>
+</div> -->
 
 
 
@@ -181,7 +244,7 @@
 
 
 
-  <footer class="footer">
+  <!-- <footer class="footer">
     <div class="container">
       <div class="content has-text-centered">
         <p>
@@ -189,7 +252,7 @@
         </p>
       </div>
     </div>
-  </footer>
+  </footer> -->
 
 
 
@@ -208,7 +271,7 @@
   };
   firebase.initializeApp(config);
 </script>
-  <script src="javaScript/java.js" type="text/javascript"></script>
+  <script src="../javaScript/java.js" type="text/javascript"></script>
   <script src="./app.js" type="text/javascript">
 
   </script>
